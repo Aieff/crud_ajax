@@ -24,28 +24,7 @@
       <th scope="col">Nota</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>God of War</td>
-      <td>Ação</td>
-      <td>2022</td>
-      <td>9.5</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>The Last Of Us II</td>
-      <td>Ação, Apocalipse</td>
-      <td>2023</td>
-      <td>9.8</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Horizon Zero Dawn</td>
-      <td>Ação, Aventura</td>
-      <td>2021</td>
-      <td>9.2</td>
-    </tr>
+  <tbody id="listarDadosGames">
   </tbody>
 </table>
 
