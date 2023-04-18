@@ -96,6 +96,7 @@ function listarGame() {
                                             "<td>" + elem.genero + "</td> " +
                                             "<td>" + elem.ano + "</td > " +
                                             "<td>" + elem.nota + "</td> " +
+                                            "<td>" + "<button type='button' class='btn btn-success' onclick='exibirModalEditarGame(" + elem.id + ")'>Editar</button>" +"</td> " +
                                             "</tr>";
                                     });
                                     $("#listarDadosGames").html(html);
@@ -107,6 +108,94 @@ function listarGame() {
                 }
             });
         }
-        
-    
+
+
+function exibirModalEditarGame(id) {
+
+
+    $("#modalTituloGames").html("Editar Game");
+    $("#modalGameName").val("");
+    $("#modalGameGenero").val("");
+    $("#modalGameAno").val("");
+    $("#modalGameAvaliacao").val("");
+    $("#modalGameFooter").html('<button type="button" class="btn btn-primary" id="btnEditarGame" onclick="editarGame()">Editar</button>');
+
+
+    var dados = {
+        acao: 'buscaIdUsuarioEditar',
+        id: id
+    };
+
+    $.ajax({
+        method: "POST",
+        url: "../ajax/games.php",
+        dataType: 'json',
+        data: dados,
+        success: function (data) {
+            console.log(data)
+            if (data['error']) {
+
+            } else {
+
+                $("#modalGameName").val();
+                $("#modalGameGenero").val();
+                $("#modalGameAno").val();
+                $("#modalGameAvaliacao").val();
+
+            }
+
+        },
+        error: function (data) {
+            alert("error");
+        }
+    });
+}
+
+
+function editarGame() {
+
+    // Recebe os dados vindos do formulario
+    var dados = {
+        acao: "editarGame",
+        id: id,
+        nome: $("#modalGameName").val(),
+        genero: $("#modalGameGenero").val(),
+        ano: $("#modalGameAno").val(),
+        nota: $("#modalGameAvaliacao").val()
+    };
+
+    if (dados.nome != '' || dados.genero != '' ||
+        dados.ano != '' || dados.nota != '') {
+
+        $.ajax({
+            method: "POST",
+            url: "../ajax/games.php",
+            dataType: 'json',
+            data: dados,
+            success: function (data) {
+                console.log(data)
+                if (data['error']) {
+                    //alert(data['error'])
+                } else {
+                    //alert(data['error'])
+                    modal.hide();
+                    listarGame();
+                }
+            },
+            error: function (data) {
+                //Exibe alerta error
+                $("#modalAlert").html('<div class="alert alert-danger" role="alert">' +
+                    'Ocorreu um problema tente novamente' +
+                    '</div>');
+            }
+
+        });
+    } else
+        {
+            //Exibe alerta campos obrigatórios
+            $("#modalAlert").html('<div class="alert alert-danger" role="alert">' +
+                'Preencha ao menos um campo' +
+                '</div>');
+        }
+    }
 
