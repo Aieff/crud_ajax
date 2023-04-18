@@ -43,6 +43,12 @@
                 <div class="modal-body">
                     <div id="modalAlert"></div>
                     <div class="form-group">
+
+                        <div id="gameIdModal">
+                        <label for="modalGameId">Id</label>
+                        <input type="text" class="form-control" id="modalGameId" disabled><br>
+                        </div>
+
                         <label for="modalGameName">Nome do Game</label><span style="color: red; font-size: 10px"> * Obrigatório</span>
                         <input type="text" class="form-control" id="modalGameName"><br>
 
@@ -60,6 +66,50 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+    <div class="modal fade" id="modalDeletar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTituloDeletar"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                    <div id="alertaMensagem"></div><br>
+
+                    <div id="gameIdModal">
+                        <label for="modalGameId">Id</label>
+                        <input type="text" class="form-control" id="modalGameIdDeletar" disabled><br>
+                        </div>
+
+                        <label for="modalGameName">Nome do Game</label>
+                        <input type="text" class="form-control" id="modalGameNameDeletar" disabled><br>
+
+                        <label for="modalGameGenero">Gênero</label>
+                        <input type="text" class="form-control" id="modalGameGeneroDeletar" disabled><br>
+
+                        <label for="modalGameAno">Ano de lançamento</label>
+                        <input type="text" class="form-control" id="modalGameAnoDeletar" disabled><br>
+
+                        <label for="modalGameAvaliacao">Nota</label>
+                        <input type="text" class="form-control" id="modalGameAvaliacaoDeletar" disabled>
+
+                    </div>
+                </div>
+                <div class="modal-footer" id="modalGameFooterDeletar"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
 
 
 </div>

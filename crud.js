@@ -3,6 +3,7 @@ $(document).ready(function () {
 });
 
 var modal = new bootstrap.Modal(document.getElementById('modalGame'));
+var modalDeletar = new bootstrap.Modal(document.getElementById('modalDeletar'));
 
 function exibirModalCadastrarGame() {
 
@@ -17,6 +18,7 @@ function exibirModalCadastrarGame() {
     $("#modalGameAvaliacao").val("");
     //adicionar o botão de cadastrar
     $("#modalGameFooter").html('<button type="button" class="btn btn-primary" id="btnSalvarGame" onclick="cadastrarGame()">Salvar</button>');
+    $("#gameIdModal").hide();
 
     modal.show();
 
@@ -96,7 +98,7 @@ function listarGame() {
                                             "<td>" + elem.genero + "</td> " +
                                             "<td>" + elem.ano + "</td > " +
                                             "<td>" + elem.nota + "</td> " +
-                                            "<td>" + "<button type='button' class='btn btn-success' onclick='exibirModalEditarGame(" + elem.id + ")'>Editar</button>" +"</td> " +
+                                            "<td>" + "<button type='button' class='btn btn-success' onclick='exibirModalEditarGame(" + elem.id + ")'>Editar</button> <button type='button' class='btn btn-danger' onclick='exibirModalDeletarGame(" + elem.id + ")'>Deletar</button>" +"</td> " +
                                             "</tr>";
                                     });
                                     $("#listarDadosGames").html(html);
@@ -119,10 +121,11 @@ function exibirModalEditarGame(id) {
     $("#modalGameAno").val("");
     $("#modalGameAvaliacao").val("");
     $("#modalGameFooter").html('<button type="button" class="btn btn-primary" id="btnEditarGame" onclick="editarGame()">Editar</button>');
+    $("#gameIdModal").show();
 
 
     var dados = {
-        acao: 'buscaIdUsuarioEditar',
+        acao: 'buscaIdGameEditar',
         id: id
     };
 
@@ -134,14 +137,16 @@ function exibirModalEditarGame(id) {
         success: function (data) {
             console.log(data)
             if (data['error']) {
-
+                //console.log(data);
             } else {
 
-                $("#modalGameName").val();
-                $("#modalGameGenero").val();
-                $("#modalGameAno").val();
-                $("#modalGameAvaliacao").val();
+                $("#modalGameId").val(data.id);
+                $("#modalGameName").val(data.nome);
+                $("#modalGameGenero").val(data.genero);
+                $("#modalGameAno").val(data.ano);
+                $("#modalGameAvaliacao").val(data.nota);
 
+                modal.show();
             }
 
         },
@@ -157,7 +162,7 @@ function editarGame() {
     // Recebe os dados vindos do formulario
     var dados = {
         acao: "editarGame",
-        id: id,
+        id: $("#modalGameId").val(),
         nome: $("#modalGameName").val(),
         genero: $("#modalGameGenero").val(),
         ano: $("#modalGameAno").val(),
@@ -199,3 +204,89 @@ function editarGame() {
         }
     }
 
+
+
+    function exibirModalDeletarGame(id) {
+
+        $("#modalTituloDeletar").html("Deletar Game");
+        $("#alertaMensagem").html("Realmente deseja deletar o Game ?");
+        $("#modalGameFooterDeletar").html('<button type="button" class="btn btn-danger" id="btnDeletarGame" onclick="deletarGame()">Deletar</button>');
+    
+
+        var dados = {
+            acao: "buscaDadosDeletar",
+            id: id
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "../ajax/games.php",
+            dataType: 'json',
+            data: dados,
+            success: function (data) {
+                console.log(data)
+                if (data['error']) {
+                    //alert(data['error'])
+                } else {
+                    //alert(data['error'])
+                    
+                $("#modalGameIdDeletar").val(data.id);
+                $("#modalGameNameDeletar").val(data.nome);
+                $("#modalGameGeneroDeletar").val(data.genero);
+                $("#modalGameAnoDeletar").val(data.ano);
+                $("#modalGameAvaliacaoDeletar").val(data.nota);
+
+                    modalDeletar.show();
+                    listarGame();
+                }
+            },
+            error: function (data) {
+                //Exibe alerta error
+                $("#modalAlert").html('<div class="alert alert-danger" role="alert">' +
+                    'Ocorreu um problema tente novamente' +
+                    '</div>');
+            }
+
+        });
+    
+    }  
+
+
+
+function deletarGame() {
+
+    // Recebe os dados vindos do formulario
+    var dados = {
+        acao: "deletarGame",
+        id: $("#modalGameIdDeletar").val(),
+        nome: $("#modalGameNameDeletar").val(),
+        genero: $("#modalGameGenerDeletar").val(),
+        ano: $("#modalGameAnoDeletar").val(),
+        nota: $("#modalGameAvaliacaoDeletar").val()
+    };
+
+        $.ajax({
+            method: "POST",
+            url: "../ajax/games.php",
+            dataType: 'json',
+            data: dados,
+            success: function (data) {
+                console.log(data)
+                if (data['error']) {
+                    //alert(data['error'])
+                } else {
+                    //alert(data['error'])
+                    modalDeletar.hide();
+                    listarGame();
+                }
+            },
+            error: function (data) {
+                //Exibe alerta error
+                $("#modalAlert").html('<div class="alert alert-danger" role="alert">' +
+                    'Ocorreu um problema tente novamente' +
+                    '</div>');
+            }
+
+        });
+    }
+    

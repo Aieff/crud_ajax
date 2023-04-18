@@ -58,12 +58,12 @@ if ($acao == "listarGame") {
 }
 
 
-if ($acao == "buscaIdUsuarioEditar") {
+if ($acao == "buscaIdGameEditar") {
 
 
     $id = $dados['id'];
 
-    $sql = "SELECT id, nome, genero, ano, nota FROM games WHERE id = $id";
+    $sql = "SELECT id, nome, genero, ano, nota FROM games WHERE id = '$id'";
     $resultado = mysqli_query($conexao, $sql);
 
     if ($resultado) {
@@ -82,19 +82,61 @@ if ($acao == "buscaIdUsuarioEditar") {
 
 if ($acao == "editarGame") {
 
-
     $id = $dados['id'];
     $nome = $dados['nome'];
     $genero = $dados['genero'];
     $ano = $dados['ano'];
     $nota = $dados['nota'];
 
-        $sql = "UPDATE games SET (nome = $nome, genero = $genero, ano = $ano, nota = $nota) WHERE id = $id ";
+        $sql = "UPDATE games SET nome = '$nome', genero = '$genero', ano = '$ano', nota = '$nota' WHERE id = '$id'";
         $resultado = mysqli_query($conexao, $sql);
 
         if ($resultado) {
             $response['error'] = false;
             $response['msg'] = "Cadastrado com sucesso!";
+        } else {
+            $response['error'] = true;
+            $response['msg'] = "Não foi possível cadastrar o Game!";
+            echo mysqli_error($conexao);
+        }
+
+        echo json_encode($response);
+    }
+
+
+    if ($acao == "buscaDadosDeletar") {
+
+
+        $id = $dados['id'];
+    
+        $sql = "SELECT id, nome, genero, ano, nota FROM games WHERE id = '$id'";
+        $resultado = mysqli_query($conexao, $sql);
+    
+        if ($resultado) {
+            $response=mysqli_fetch_assoc($resultado);
+            $response['error'] = false;
+            $response['msg'] = "Sucesso ao buscar o Game";
+        } else {
+            $response['error'] = true;
+            $response['msg'] = "Não foi possível buscar o Game!";
+            echo mysqli_error($conexao);
+        }
+    
+        echo json_encode($response);
+    }
+    
+
+    
+if ($acao == "deletarGame") {
+
+    $id = $dados['id'];
+
+        $sql = "DELETE FROM games WHERE id = '$id'";
+        $resultado = mysqli_query($conexao, $sql);
+
+        if ($resultado) {
+            $response['error'] = false;
+            $response['msg'] = "Deletado com sucesso!";
         } else {
             $response['error'] = true;
             $response['msg'] = "Não foi possível cadastrar o Game!";
