@@ -63,6 +63,8 @@ if ($acao == "buscaIdGameEditar") {
 
     $id = $dados['id'];
 
+
+    if($nome != '' || $genero != '' || $ano != '' || $nota != '') {
     $sql = "SELECT id, nome, genero, ano, nota FROM games WHERE id = '$id'";
     $resultado = mysqli_query($conexao, $sql);
 
@@ -77,6 +79,7 @@ if ($acao == "buscaIdGameEditar") {
     }
 
     echo json_encode($response);
+    }
 }
 
 
